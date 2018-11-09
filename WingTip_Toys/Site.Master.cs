@@ -7,6 +7,8 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity;
+using System.Linq;
+using WingTip_Toys.Models;
 
 namespace WingTip_Toys
 {
@@ -75,6 +77,19 @@ namespace WingTip_Toys
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
         {
             Context.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+        }
+
+        // The return type can be changed to IEnumerable, however to support
+        // paging and sorting, the following parameters must be added:
+        //     int maximumRows
+        //     int startRowIndex
+        //     out int totalRowCount
+        //     string sortByExpression
+        public IQueryable<WingTip_Toys.Models.CategoryModel> GetCategories()
+        {
+            var _db = new WingTip_Toys.Models.ProductContext();
+            IQueryable<CategoryModel> query = _db.Categories;
+            return query;
         }
     }
 
